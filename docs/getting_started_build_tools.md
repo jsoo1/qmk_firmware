@@ -50,6 +50,14 @@ By default, this will download compilers for both AVR and ARM. If you don't need
 
     nix-shell --arg arm false
 
+## Guix
+
+If you use [GuixSD](https://www.gnu.org/s/guix) or have Guix installed, run the following to get a build environment:
+```
+guix environment --load=guix-manifest.scm
+source guix-environment-variables.sh
+```
+
 ## macOS
 If you're using [homebrew,](http://brew.sh/) you can use the following commands:
 
