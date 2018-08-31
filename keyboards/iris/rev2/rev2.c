@@ -1,12 +1,5 @@
 #include "rev2.h"
 
-#ifdef SSD1306OLED
-void led_set_kb(uint8_t usb_led) {
-    // put your keyboard LED indicator (ex: Caps Lock LED) toggling code here
-    led_set_user(usb_led);
-}
-#endif
-
 void matrix_init_kb(void) {
 
     // // green led on
@@ -39,4 +32,3 @@ const keypos_t hand_swap_config[MATRIX_ROWS][MATRIX_COLS] = {
     {{0,4}, {1,4}, {2,4}, {3,4}, {4,4}, {5,4}},
 };
 #endif
-
