@@ -16,6 +16,10 @@ enum custom_keycodes {
   QWERTY = SAFE_RANGE,
 };
 
+enum tapdances {
+  TD_BRACES_OPEN = 0,
+  TD_BRACES_CLOSE
+};
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_QWERTY] = LAYOUT(
@@ -50,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_F12,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                              KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_TILDE, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                            KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______,
+     KC_TILDE, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                            KC_CIRC, KC_AMPR, KC_ASTR,TD(TD_BRACES_OPEN), TD(TD_BRACES_CLOSE), _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      CTRL_ESC, KC_MPRV, KC_MNXT, KC_VOLU, KC_PGUP, KC_UNDS,                            KC_EQL,  KC_HOME, RGB_HUI, RGB_SAI, RGB_VAI, KC_BSLS,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -59,7 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                     _______, _______, _______,                   _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
- 
+
   [_ADJUST] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      _______, _______, _______, _______, _______, _______,                            _______,  _______, _______, _______, _______, _______,
@@ -73,6 +77,39 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                     _______, _______, _______,                   _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   )
+};
+
+void td_braces_open(qk_tap_dance_state_t *state, void *user_data) {
+  switch (state->count) {
+  case 1:
+    tap_code(KC_LPRN);
+    break;
+  case 2:
+    tap_code(KC_LBRC);
+    break;
+  default:
+    tap_code(KC_LCBR);
+    break;
+  }
+}
+
+void td_braces_close(qk_tap_dance_state_t *state, void *user_data) {
+  switch (state->count) {
+  case 1:
+    tap_code(KC_RPRN);
+    break;
+  case 2:
+    tap_code(KC_RBRC);
+    break;
+  default:
+    tap_code(KC_RCBR);
+    break;
+  }
+}
+
+qk_tap_dance_action_t tap_dance_actions[] = {
+    [TD_BRACES_OPEN] = ACTION_TAP_DANCE_FN(td_braces_open),
+    [TD_BRACES_CLOSE] = ACTION_TAP_DANCE_FN(td_braces_close)
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
